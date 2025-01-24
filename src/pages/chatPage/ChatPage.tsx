@@ -39,6 +39,7 @@ const ChatPage: React.FC = () => {
       const reader = response.body.getReader()
       const decoder = new TextDecoder()
       const aiMessage: Message = { role: "assistant", content: "" }
+      let isFirstChunk = true 
 
       while (true) {
         const { done, value } = await reader.read()
@@ -46,7 +47,13 @@ const ChatPage: React.FC = () => {
 
         const chunk = decoder.decode(value)
         aiMessage.content += chunk
-        setMessages((prev) => [...prev.slice(0, -1), aiMessage])
+        if(isFirstChunk) {
+          isFirstChunk = false
+          setMessages((prev) => [...prev, aiMessage])
+        }else{
+          setMessages((prev) => [...prev.slice(0, -1), aiMessage])
+
+        }
       }
     } catch (error) {
       console.error("Error:", error)
@@ -58,7 +65,7 @@ const ChatPage: React.FC = () => {
 
   return (
     <div className="flex flex-col h-screen bg-gray-900 text-white">
-      <header className="bg-gray-800 p-4 text-xl font-bold">Ollama Chat</header>
+      <header className="bg-gray-800 p-4 text-xl font-bold">Skility Chat</header>
       <main className="flex-1 overflow-auto p-4 space-y-4">
         {messages.map((message, index) => (
           <ChatMessage key={index} message={message} />

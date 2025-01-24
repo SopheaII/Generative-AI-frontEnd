@@ -1,42 +1,72 @@
-import type React from "react"
-import type { Message } from "~/types/messageType"
-import { User, Bot } from "lucide-react"
+import React from "react";
+import type { Message } from "~/types/messageType";
+import { User, Bot } from "lucide-react";
+import ReactMarkdown from "react-markdown";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism"; // Or choose another theme
 
 interface ChatMessageProps {
-  message: Message
+  message: Message;
 }
 
 const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
-  const isUser = message.role === "user"
-
-  // Helper function to detect code blocks
-  const formatMessageContent = (content: string) => {
-    if (content.includes("```")) {
-      // It's a code block, so let's apply specific styling
-      return (
-        <pre className="bg-gray-800 text-white p-4 rounded-md overflow-x-auto">
-          <code>{content}</code>
-        </pre>
-      )
-    }
-
-    // For general messages, apply default styling
-    return <p className="text-sm">{content}</p>
-  }
+  const isUser = message.role === "user";
 
   return (
-    <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
-      <div className={`flex items-start space-x-2 max-w-3/4 ${isUser ? "flex-row-reverse space-x-reverse" : ""}`}>
-        <div className={`p-2 rounded-full ${isUser ? "bg-blue-600" : "bg-gray-700"}`}>
+    <div className={`flex ${isUser ? "justify-end" : "justify-start"} my-2`}>
+      <div
+        className={`flex items-start space-x-2 max-w-3/4 ${
+          isUser ? "flex-row-reverse space-x-reverse" : ""
+        }`}
+      >
+        {/* Icon Container */}
+        <div
+          className={`p-2 rounded-full text-white ${
+            isUser ? "bg-blue-500" : "bg-gray-600"
+          }`}
+        >
           {isUser ? <User size={20} /> : <Bot size={20} />}
         </div>
-        <div className={`p-3 rounded-lg ${isUser ? "bg-blue-600" : "bg-gray-700"}`}>
-          {/* Apply content formatting */}
-          {formatMessageContent(message.content)}
+
+        {/* Message Content */}
+        <div
+          className={`p-3 rounded-lg text-white ${
+            isUser ? "bg-blue-500" : "bg-gray-700"
+          }`}
+        >
+          <ReactMarkdown
+            components={{
+              // Customize code block rendering
+              code({ inline, className, children, ...props }) {
+                const match = /language-(\w+)/.exec(className || "");
+                return !inline && match ? (
+                  <SyntaxHighlighter
+                    style={dracula}
+                    language={match[1]}
+                    PreTag="div"
+                    {...props}
+                  >
+                    {String(children).replace(/\n$/, "")}
+                  </SyntaxHighlighter>
+                ) : (
+                  <code
+                    className={`bg-gray-700 rounded p-1 text-sm ${
+                      isUser ? "bg-blue-400" : "bg-gray-800"
+                    }`}
+                    {...props}
+                  >
+                    {children}
+                  </code>
+                );
+              },
+            }}
+          >
+            {message.content}
+          </ReactMarkdown>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ChatMessage
+export default ChatMessage;
