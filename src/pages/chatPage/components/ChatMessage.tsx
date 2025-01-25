@@ -1,9 +1,10 @@
 import React from "react";
-import type { Message } from "~/types/messageType";
+import type { Message } from "~/types/commonType";
 import { User, Bot } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism"; // Or choose another theme
+import MessageBox from "~/components/MessageBox";
 
 interface ChatMessageProps {
   message: Message;
@@ -34,35 +35,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
             isUser ? "bg-blue-500" : "bg-gray-700"
           }`}
         >
-          <ReactMarkdown
-            components={{
-              // Customize code block rendering
-              code({ inline, className, children, ...props }) {
-                const match = /language-(\w+)/.exec(className || "");
-                return !inline && match ? (
-                  <SyntaxHighlighter
-                    style={dracula}
-                    language={match[1]}
-                    PreTag="div"
-                    {...props}
-                  >
-                    {String(children).replace(/\n$/, "")}
-                  </SyntaxHighlighter>
-                ) : (
-                  <code
-                    className={`bg-gray-700 rounded p-1 text-sm ${
-                      isUser ? "bg-blue-400" : "bg-gray-800"
-                    }`}
-                    {...props}
-                  >
-                    {children}
-                  </code>
-                );
-              },
-            }}
-          >
-            {message.content}
-          </ReactMarkdown>
+          <MessageBox message={message}/>
         </div>
       </div>
     </div>

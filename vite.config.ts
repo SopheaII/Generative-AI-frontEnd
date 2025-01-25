@@ -6,7 +6,7 @@ import viteTsconfigPaths from 'vite-tsconfig-paths'
 export default defineConfig({
   server: {
     open: false,
-    port: 3000,
+    port: 3001,
   },
   resolve: {
     alias: {

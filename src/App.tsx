@@ -1,6 +1,5 @@
 import { BrowserRouter, Route, Routes, RouterProvider } from "react-router-dom";
 import appRoutes, { AppRoute } from "./routes/appRoutes";
-import Home from "./pages/homePage/homePage";
 import { AppProvider } from "./context/appContext";
 
 const App: React.FC = () => {

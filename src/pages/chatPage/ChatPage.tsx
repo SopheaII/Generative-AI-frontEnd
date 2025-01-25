@@ -2,7 +2,7 @@ import type React from "react";
 import { useState, useRef, useEffect } from "react";
 import { Send, Loader2 } from "lucide-react";
 import ChatMessage from "./components/ChatMessage";
-import type { Message } from "~/types/messageType";
+import type { Message } from "~/types/commonType";
 
 const ChatPage: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -69,12 +69,9 @@ const ChatPage: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-900 text-white">
-      <div className="flex flex-col w-full max-w-3xl h-[90%] bg-gray-800 rounded-lg shadow-lg">
-        <header className="bg-gray-700 p-4 text-xl font-bold rounded-t-lg">
-          Skility Chat
-        </header>
-        <main className="flex-1 overflow-auto p-4 space-y-4">
+    <div className="flex justify-center h-full  text-white">
+      <div className="flex flex-col w-full max-w-3xl shadow-lg">
+        <main className="flex-1 overflow-auto p-4 space-y-4 w-full">
           {messages.map((message, index) => (
             <ChatMessage key={index} message={message} />
           ))}
@@ -82,15 +79,14 @@ const ChatPage: React.FC = () => {
         </main>
         <form
           onSubmit={handleSubmit}
-          className="flex items-center p-4 bg-gray-700 rounded-b-lg"
+          className="flex items-center p-4 border-gray-2000"
         >
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            className="flex-1 bg-gray-600 text-white p-2 rounded-l-md focus:outline-none"
+            className="flex-1 p-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500 text-black"
             placeholder="Type your message..."
-            disabled={isLoading}
           />
           <button
             type="submit"
