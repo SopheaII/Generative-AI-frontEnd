@@ -25,14 +25,14 @@ const RoadMap: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen shadow-lg">
-      {/* <header className="bg-gray-700 p-4 text-xl font-bold">
-        Skility Chat
-      </header> */}
-      <Header/>
+    <div className="flex flex-col h-screen overscroll-none shadow-lg">
+      <Header />
       <div className="flex h-full bg-gray-100">
-        <div className="w-1/2 bg-white border-r border-gray-200">
-          <ChatPage />
+        <div className="w-1/2 h-full bg-white border-r border-gray-200 overflow-hidden">
+          {/* Ensuring only this part scrolls */}
+          <div className="h-[calc(100vh-84px)] overflow-y-auto">
+            <ChatPage />
+          </div>
         </div>
         <div className="w-2/3 flex flex-col">
           <RoadmapInput onAddItem={handleAddRoadmapItem} />
@@ -50,6 +50,7 @@ const RoadMap: React.FC = () => {
       </div>
     </div>
   );
+  
 };
 
 export default RoadMap;

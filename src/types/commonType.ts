@@ -9,5 +9,6 @@ export interface Message {
   export interface RoadmapItem {
     id: number
     title: string
-    children: RoadmapItem[]
+    children?: RoadmapItem[]
+    detail?: string
   }
